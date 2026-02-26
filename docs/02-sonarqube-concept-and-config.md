@@ -14,21 +14,7 @@
 
 SonarQube 시스템은 단순히 하나의 거대한 프로그램이 아닙니다. 크게 **SonarQube 서버** 와 실제 코드를 핥고(?) 지나가는 **Scanner(분석기)** 로 분리되어 있습니다.
 
-```mermaid
-flowchart LR
-    subgraph "개발자 로컬 환경 (또는 CI 파이프라인)"
-        A[개발자 소스코드\n main.py] -->|CLI 실행| B((Sonar Scanner))
-    end
-    
-    subgraph "SonarQube 플랫폼 (Docker Container)"
-        B -- "분석 리포트 전송 (REST API / HTTP)" --> C[Compute Engine]
-        C -->|결과 병합/계산| D[(Database\nPostgreSQL 등)]
-        D --> E[Web UI / 대시보드]
-    end
-    
-    style B fill:#f9f,stroke:#333,stroke-width:2px
-    style C fill:#bbf,stroke:#333,stroke-width:2px
-```
+![SonarQube 아키텍처 다이어그램](images/02-sonarqube-architecture.png)
 
 *   **Sonar Scanner (로컬/CI 에이전트):** 코드가 있는 곳, 즉 내 로컬 PC나 Github Actions 러너에서 직접 구동됩니다. 파일들을 읽고 추상 구문 트리(AST)를 분석해 메타데이터 덩어리로 만듭니다.
 *   **SonarQube Server (서버):** 로컬에서 스캐너가 보낸 원시 분석 데이터를 수신하는 중앙 컴포넌트입니다.

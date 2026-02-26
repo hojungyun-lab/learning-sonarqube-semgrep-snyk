@@ -13,25 +13,7 @@
 ### 2. GitHub Actions 병렬 스캐닝 아키텍처
 단일 러너(서버)에서 Sonar -> Semgrep -> Snyk을 순차적으로 돌리면 속도가 너무 느립니다. CI 엔진은 각각의 스캐너를 **독립된 격리 환경(병렬 컨테이너)**에 동시에 띄워 단시간 내에 검증을 끝냅니다.
 
-```mermaid
-flowchart TD
-    A[개발자: git push \nor PR 생성] --> B((GitHub Actions\nEvent Trigger))
-    
-    B --> C{병렬 Jobs 할당}
-    
-    C -->|Job 1| D[SonarQube Scanner\n코드 퀄리티/스멜 평가]
-    C -->|Job 2| E[Semgrep SAST\n보안 구조/컨벤션 평가]
-    C -->|Job 3| F[Snyk SCA\n서드파티 취약점 평가]
-    
-    D --> G[(Artifacts & Reports)]
-    E --> G
-    F --> G
-    
-    G --> H[GitHub PR 대시보드\n결과 통합 코멘트]
-
-    style C fill:#f9f,stroke:#333,stroke-width:2px
-    style G fill:#e6ffed,stroke:#333,stroke-width:2px
-```
+![GitHub Actions 병렬 스캐닝 아키텍처 다이어그램](images/08-github-actions-pipeline.png)
 
 *   **동작 원리:** 이벤트가 발생하면(`on: push`), GitHub 서버 인프라(Runner)에 Ubuntu/Linux 가상 머신 3대가 동시에 켜집니다. 각 머신은 내 레포지토리의 코드를 체크아웃하고 스캐너를 다운받아 검사를 돌린 결괏값을 중앙 대시보드(PR 뷰)로 쏴줍니다.
 

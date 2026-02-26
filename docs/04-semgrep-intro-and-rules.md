@@ -21,17 +21,7 @@
 
 ### 2. Semgrep 동작 아키텍처 및 룰셋 레지스트리
 
-```mermaid
-flowchart TD
-    A[로컬 개발자 PC / CI 파이프라인] -->|1. semgrep scan 명령어 실행| B(Semgrep CLI 엔진)
-    B -->|2. 코드 AST 파싱| C[Python/JS 등 언어 구문 분석]
-    D[Semgrep 커뮤니티 레지스트리\nsemgrep.dev/explore] -.->|3. p/python 등 정책 다운로드/캐싱| B
-    B -.->|4. 사용자 커스텀 .semgrep.yml 로드| B
-    B --> E{AST 노드와 정책 패턴 매칭 연산}
-    E --> F[빠른 터미널 Output 및 SARIF 리포트 생성]
-    
-    style B fill:#f96,stroke:#333,stroke-width:2px
-```
+![Semgrep 동작 아키텍처 다이어그램](images/04-semgrep-architecture.png)
 
 1.  **Scanner CLI:** Go와 OCaml로 작성되어 미친 듯이 빠릅니다. (수백만 줄 스캔에 몇십 초 단위 소요). SonarQube처럼 무거운 서버를 띄울 필요 없이 그냥 터미널 명령어 하나로 동작합니다.
 2.  **규칙 저장소(Registry):** 수많은 보안 전문가와 오픈소스 커뮤니티가 기여한 수천 개의 룰셋 묶음 패키지가 클라우드에 존재하며, 실행 시 즉시 당겨와(Pull) 스캔합니다. (예: `p/python`, `p/owasp-top-ten`)

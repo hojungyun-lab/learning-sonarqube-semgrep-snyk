@@ -14,24 +14,7 @@
 
 로컬 CLI를 입력하면 단순히 파일 글자만 읽어서 찾는 것이 아니라, 내부적으로 패키지 매니저의 엔진을 백그라운드로 돌려 "의존성 트리"를 직접 조립합니다.
 
-```mermaid
-flowchart TD
-    subgraph 개발자 환경 (Local / CI)
-        A(poetry.lock\nlocal environment) -->|1. snyk test| B[Snyk CLI]
-        B -->|2. 패키지 트리 시뮬레이션 및\n간접 의존성(Transitive)까지 추출| C{의존성 트리(Manifest)}
-    end
-    
-    subgraph Snyk Vulnerability DB (SaaS)
-        D[(Snyk 독점 취약점 DB\n+ 오픈 CVE/NVD)]
-    end
-    
-    C -- 3. 패키지명@버전 해시값 전송 --> D
-    D -- 4. 매칭되는 알려진 취약점(CVE) 및\n패치된 안전 버전 반환 --> B
-    B --> E[CLI 결과물 노출\nor JSON 리포트]
-
-    style B fill:#e6f3ff,stroke:#333,stroke-width:2px
-    style D fill:#fce4e4,stroke:#333,stroke-width:2px
-```
+![Snyk 동작 아키텍처 다이어그램](images/06-snyk-architecture.png)
 
 *   **통신 원리:** 내 소스코드(비즈니스 로직) 자체가 Snyk 서버로 전송되는 것이 **아닙니다**. Snyk CLI는 패키지 목록과 버전 정보(메타데이터)만을 추출해 클라우드 DB와 대조(Mapping)하므로 기밀 유출 걱정이 적습니다.
 
