@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "final-project"
+version = "0.1.0"
+description = "Remediated Python Application for DevSecOps Learning"
+authors = ["DevSecOps Learner <student@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "0.86.0"
+uvicorn = "0.20.0"
+requests = "2.28.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

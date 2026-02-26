@@ -1,0 +1,26 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Python virtual environments & poetry
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+poetry.lock
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+
+# SonarQube & Scanners
+.scannerwork/
+snyk_report.json
